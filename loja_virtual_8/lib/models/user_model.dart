@@ -11,18 +11,19 @@ class UserModel extends Model {
   
   bool isLoading = false;
 
-  void signUp({@required Map<String, dynamic> userData, @required String pass, @required VoidCallback onSucess, @required VoidCallback onFail}) {
+  void signUp({@required Map<String, dynamic> userData, @required String pass, @required VoidCallback onSuccess, @required VoidCallback onFail}) {
     isLoading = true;
     notifyListeners();
-
-    _auth.createUserWithEmailAndPassword(email: userData["email"], password: pass).then((user) async {
-      firebaseUser = user as FirebaseUser;
-
+    
+    _auth.createUserWithEmailAndPassword(email: userData["email"].trim(), password: pass).then((authResult) async {
+      firebaseUser = authResult.user;
+      
       await _saveUserData(userData);
-      onSucess();
+      onSuccess();
       isLoading = false;
       notifyListeners();
     }).catchError((e) {
+      print(e);
       onFail();
       isLoading = false;
       notifyListeners();
@@ -43,8 +44,7 @@ class UserModel extends Model {
   }  
 
   Future<Null> _saveUserData(Map<String, dynamic> userData) async {
-    this.userData = userData;
-
+    this.userData = userData;   
     await Firestore.instance.collection("users").document(firebaseUser.uid).setData(userData);
   }
 }
