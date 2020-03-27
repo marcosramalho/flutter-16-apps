@@ -51,7 +51,7 @@ import 'package:scoped_model/scoped_model.dart';
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text("Olá, ${!model.isLoggedIn() ? "" : model.userData["email"]}", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                              Text("Olá, ${!model.isLoggedIn() ? "" : model.userData["name"]}", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
                               GestureDetector(
                                 child: Text(!model.isLoggedIn() ? "Entre ou cadastre-se >" : "Sair", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16, fontWeight: FontWeight.bold),),
                                 onTap: () {
