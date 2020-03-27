@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:loja_virtual_8/models/user_model.dart';
 import 'package:loja_virtual_8/screens/login_screen.dart';
 import 'package:loja_virtual_8/tiles/drawer_tile.dart';
+import 'package:scoped_model/scoped_model.dart';
 
  class CustomDrawer extends StatelessWidget {
 
@@ -44,20 +46,29 @@ import 'package:loja_virtual_8/tiles/drawer_tile.dart';
                     Positioned(
                       left: 0,
                       bottom: 0,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text("Olá,", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-                          GestureDetector(
-                            child: Text("Entre ou cadastre-se >", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16, fontWeight: FontWeight.bold),),
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context)=>LoginScreen())
-                              );
-                            },
-                          )
-                        ],
-                      ),
+                      child: ScopedModelDescendant<UserModel>(
+                        builder: (context, child, model) {                          
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text("Olá, ${!model.isLoggedIn() ? "" : model.userData["email"]}", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                              GestureDetector(
+                                child: Text(!model.isLoggedIn() ? "Entre ou cadastre-se >" : "Sair", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16, fontWeight: FontWeight.bold),),
+                                onTap: () {
+                                  if (!model.isLoggedIn()) {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (context)=>LoginScreen())
+                                    );
+                                  } else {
+                                    model.signOut();
+                                  }
+                                  
+                                },
+                              )
+                            ],
+                          );
+                        }
+                      )
                     )
                   ],
                 ),
