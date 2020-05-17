@@ -3,6 +3,9 @@ import 'package:loja_virtual_8/models/cart_model.dart';
 import 'package:loja_virtual_8/models/user_model.dart';
 import 'package:loja_virtual_8/screens/login_screen.dart';
 import 'package:loja_virtual_8/tiles/cart_tile.dart';
+import 'package:loja_virtual_8/widgets/cart_price.dart';
+import 'package:loja_virtual_8/widgets/discount_card.dart';
+import 'package:loja_virtual_8/widgets/ship_card.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class CartScreen extends StatelessWidget {
@@ -80,7 +83,10 @@ class CartScreen extends StatelessWidget {
                       return CartTile(product);
                     }
                   ).toList(),
-                )
+                ),
+                DiscountCard(),
+                ShipCard(),
+                CartPrice(() {})
               ],
             );
           }
