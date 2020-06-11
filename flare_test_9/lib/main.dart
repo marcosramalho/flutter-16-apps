@@ -7,42 +7,65 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Home(),
+      home: Splash(),
       debugShowCheckedModeBanner: false,
 
     );
-  }
+  }  
 }
 
-class Home extends StatefulWidget {
+class Splash extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _SplashState createState() => _SplashState();
 }
 
-class _HomeState extends State<Home> {
-
-  String _anim = "spin";
+class _SplashState extends State<Splash> {
 
   @override
   Widget build(BuildContext context) {
     
     return Scaffold(
       body: Center(
-        child: GestureDetector(
-          onTap: () {
-            setState(() {
-              if (_anim == "spin")
-                _anim = "spin2";
-              else 
-                _anim = "spin";
-            });
-          },
-          child: Container(
-            width: 150,
-            height: 150,
-            child: FlareActor("assets/AnimGears1.flr", animation: _anim,),
+        child: Container(
+          width: 150,
+          height: 150,
+          child: FlareActor("assets/AnimGears1.flr", animation: "spin",),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration(seconds: 3)).then((_) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => Home())
+      );
+    });
+  }
+}
+
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Text(
+            "Flutter + Flare",
+            style: TextStyle(fontSize: 30),
+            textAlign: TextAlign.center,
           ),
-        )
+          Container(
+            height: 100,
+            width: 100,
+            child: FlareActor("assets/AnimHeart1.flr", animation: "pulse",),
+          ),
+        ],
       ),
     );
   }
