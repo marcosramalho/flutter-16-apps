@@ -3,9 +3,9 @@ import 'package:fluttertube_10/api.dart';
 import 'package:fluttertube_10/screens/home.dart';
 
 void main() async {
-  Api api = Api();
+  //Api api = Api();
 
-  await api.search("eletro");
+  //await api.search("eletro");
   runApp(MyApp());
 } 
 

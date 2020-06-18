@@ -4,7 +4,7 @@ import 'package:fluttertube_10/models/video.dart';
 import 'package:fluttertube_10/screens/home.dart';
 import 'package:http/http.dart' as http;
 
-const API_KEY = "AIzaSyDL2RzzhlJ0VH8_xeOFWKLjZGxUWyJPC5c";
+const API_KEY = "AIzaSyBnvxcEKkluQPRO8UUEymFZ2OCZOJvOf1o";
 
 class Api {
 
