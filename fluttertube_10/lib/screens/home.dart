@@ -1,10 +1,14 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertube_10/blocs/videos_bloc.dart';
 import 'package:fluttertube_10/delegates/data_search.dart';
+import 'package:fluttertube_10/widgets/video_tile.dart';
 
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Container(
           height: 25,
@@ -28,14 +32,27 @@ class Home extends StatelessWidget {
             onPressed: () async {
               String result = await showSearch(context: context, delegate: DataSearch());
 
-              print(result);
+              if (result != null) 
+                BlocProvider.getBloc<VideosBloc>().inSearch.add(result);
             }
           )
         ],
       ),
-      body: Container(
-        
-      ),
+      body: StreamBuilder(
+        stream: BlocProvider.getBloc<VideosBloc>().outVideos,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                return VideoTile(snapshot.data[index]);
+              },
+              itemCount: snapshot.data.length,
+            );
+          }
+
+          return Container();
+        }
+      )
     );
   }
 }
