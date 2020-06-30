@@ -4,6 +4,7 @@ import 'package:fluttertube_10/blocs/favorite_bloc.dart';
 import 'package:fluttertube_10/blocs/videos_bloc.dart';
 import 'package:fluttertube_10/delegates/data_search.dart';
 import 'package:fluttertube_10/models/video.dart';
+import 'package:fluttertube_10/screens/favorite.dart';
 import 'package:fluttertube_10/widgets/video_tile.dart';
 
 class Home extends StatelessWidget {
@@ -35,7 +36,9 @@ class Home extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.star), 
             onPressed: () {
-
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => Favorite())
+              );
             }
           ),
           IconButton(
@@ -57,7 +60,7 @@ class Home extends StatelessWidget {
               itemBuilder: (context, index) {
                 if (index < snapshot.data.length)
                   return VideoTile(snapshot.data[index]);
-                
+                                
                 if (index > 1) {
                   BlocProvider.getBloc<VideosBloc>().inSearch.add(null);
                   return Container(
