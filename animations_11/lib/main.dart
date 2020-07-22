@@ -23,8 +23,7 @@ class LogoApp extends StatefulWidget {
 class _LogoAppState extends State<LogoApp> with SingleTickerProviderStateMixin {
 
   AnimationController controller;
-  Animation<double> animation;
-  Animation<double> animation2;
+  Animation<double> animation;  
 
   @override
   void initState() {
@@ -36,17 +35,8 @@ class _LogoAppState extends State<LogoApp> with SingleTickerProviderStateMixin {
 
     );
 
-    animation = Tween<double>(begin: 0, end:  300).animate(controller);
+    animation = CurvedAnimation(parent: controller, curve: Curves.elasticOut);
     animation.addStatusListener((status) {
-      if (status == AnimationStatus.completed)  {
-        controller.reverse();
-      } else if (status == AnimationStatus.dismissed) {
-        controller.forward();
-      }
-    });
-
-    animation2 = Tween<double>(begin: 0, end:  150).animate(controller);
-    animation2.addStatusListener((status) {
       if (status == AnimationStatus.completed)  {
         controller.reverse();
       } else if (status == AnimationStatus.dismissed) {
@@ -65,17 +55,11 @@ class _LogoAppState extends State<LogoApp> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        GrowTransition(
-          child: LogoWidget(),
-          animation: animation,
-        ),
-        GrowTransition(
-          child: LogoWidget(),
-          animation: animation2,
-        )
-      ],
+    return Center(
+      child: MarcosTransition(
+        child: LogoWidget(),
+        animation: animation,
+      ),
     );
   }
 }
@@ -105,12 +89,14 @@ class LogoWidget extends StatelessWidget {
   }
 }
 
-class GrowTransition extends StatelessWidget {
+class MarcosTransition extends StatelessWidget {
 
   final Widget child;
   final Animation<double> animation;
+  final sizeTween = Tween<double>(begin: 0, end: 300);
+  final opacityTween = Tween<double>(begin: 0.1, end: 1);
 
-  GrowTransition({this.child, this.animation});
+  MarcosTransition({this.child, this.animation});
 
   @override
   Widget build(BuildContext context) {
@@ -118,10 +104,13 @@ class GrowTransition extends StatelessWidget {
       child: AnimatedBuilder(
         animation: animation, 
         builder: (context, child) {
-          return Container(
-            height: animation.value,
-            width: animation.value,
-            child: child,
+          return Opacity(
+            opacity: opacityTween.evaluate(animation).clamp(0, 1.0),
+            child: Container(
+              height: sizeTween.evaluate(animation),
+              width: sizeTween.evaluate(animation),
+              child: child,
+            ),
           );
         },
         child: child,
